@@ -39,12 +39,16 @@
 
 /* Header */
 .securent-fb-header {
+  margin-bottom: 1.5rem;
+}
+
+.securent-fb-header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
   flex-wrap: wrap;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .securent-fb-header h2 {
@@ -52,6 +56,16 @@
   font-size: 1.75rem;
   color: #1f1f5f;
   font-weight: 700;
+}
+
+.securent-fb-header-content {
+  width: 100%;
+  text-align: left;
+  margin: 0;
+}
+
+.securent-fb-header-content p {
+  margin: 0 0 0.5rem;
 }
 
 .securent-fb-refresh {
@@ -297,7 +311,7 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .securent-fb-header {
+  .securent-fb-header-top {
     flex-direction: column;
     align-items: flex-start;
   }

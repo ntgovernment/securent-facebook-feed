@@ -23,7 +23,10 @@ export class FacebookFeedWidget {
 
     // Parse filter keywords (semicolon-separated)
     this.filterKeywords = options.filterKeywords
-      ? options.filterKeywords.split(";").map((k) => k.trim().toLowerCase()).filter((k) => k)
+      ? options.filterKeywords
+          .split(";")
+          .map((k) => k.trim().toLowerCase())
+          .filter((k) => k)
       : null;
 
     // Parse date filters
@@ -168,11 +171,14 @@ export class FacebookFeedWidget {
       this.currentPage = 1;
       this.render();
     } else {
-      const fallbackMsg = this.options.fallbackMessage || "Unable to load posts at this time.";
+      const fallbackMsg =
+        this.options.fallbackMessage || "Unable to load posts at this time.";
       this.element.innerHTML = `
         <div class="securent-fb-error">
           <p>${this.escapeHtml(fallbackMsg)}</p>
-          <p><a href="${this.options.fallbackUrl}" target="_blank" rel="noopener noreferrer">Visit SecureNT on Facebook</a></p>
+          <p><a href="${
+            this.options.fallbackUrl
+          }" target="_blank" rel="noopener noreferrer">Visit SecureNT on Facebook</a></p>
         </div>
       `;
     }
@@ -211,22 +217,24 @@ export class FacebookFeedWidget {
   }
 
   renderHeader() {
-    const contentHtml = this.options.content 
+    const contentHtml = this.options.content
       ? `<div class="securent-fb-header-content">${this.options.content}</div>`
       : "";
 
     return `
       <div class="securent-fb-header">
-        <h2>${this.escapeHtml(this.options.title)}</h2>
+        <div class="securent-fb-header-top">
+          <h2>${this.escapeHtml(this.options.title)}</h2>
+          <button class="securent-fb-refresh" aria-label="Refresh posts" title="Refresh posts">
+            <svg class="securent-fb-icon-refresh" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            Refresh
+          </button>
+        </div>
         ${contentHtml}
-        <button class="securent-fb-refresh" aria-label="Refresh posts" title="Refresh posts">
-          <svg class="securent-fb-icon-refresh" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="23 4 23 10 17 10"></polyline>
-            <polyline points="1 20 1 14 7 14"></polyline>
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-          </svg>
-          Refresh
-        </button>
       </div>
       <div class="securent-fb-loading" style="display: none;">
         <div class="securent-fb-spinner"></div>
