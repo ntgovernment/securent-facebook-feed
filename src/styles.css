@@ -370,7 +370,7 @@
 
 /* Compact Card Styles */
 .securent-fb-post-compact {
-  max-height: 225px;
+  max-height: 300px;
   overflow: hidden;
   position: relative;
 }
