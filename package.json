@@ -1,0 +1,35 @@
+{
+  "name": "securent-facebook-feed-widget",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Non-blocking Facebook feed widget for SecureNT with pagination, lazy loading, and privacy compliance",
+  "main": "dist/securent-fb-widget.min.js",
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "clean": "rimraf dist",
+    "serve": "npx http-server -p 8080 -c-1 --cors"
+  },
+  "keywords": [
+    "facebook",
+    "widget",
+    "securent",
+    "feed",
+    "pagination",
+    "lazy-loading"
+  ],
+  "author": "SecureNT",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.9.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "@babel/core": "^7.23.6",
+    "@babel/preset-env": "^7.23.6",
+    "postcss": "^8.4.32",
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.2"
+  }
+}

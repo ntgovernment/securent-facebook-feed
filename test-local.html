@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureNT Facebook Feed - Local Testing</title>
+
+    <!-- Widget CSS -->
+    <link rel="stylesheet" href="dist/securent-fb-widget.css">
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            background: #1f1f5f;
+            color: white;
+            padding: 2rem;
+            margin: -2rem -2rem 2rem -2rem;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .page-header h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+        }
+
+        .page-header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            border-left: 4px solid #1f1f5f;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .instructions h3 {
+            margin-top: 0;
+            color: #1f1f5f;
+        }
+
+        .section {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: #1f1f5f;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 0.9em;
+            color: #d63384;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f8;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: transparent;
+            color: #f8f8f8;
+            padding: 0;
+        }
+
+        .test-controls {
+            background: #fff3cd;
+            border: 1px solid #ffecb5;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .test-controls button {
+            background: #1f1f5f;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .test-controls button:hover {
+            background: #161647;
+        }
+
+        ul {
+            line-height: 1.8;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 3px;
+            margin-left: 0.5rem;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>🧪 SecureNT Facebook Feed Widget</h1>
+            <p>Local Development & Testing Environment</p>
+        </div>
+
+        <div class="instructions">
+            <h3>📝 Running in Local Mode</h3>
+            <p><strong>Server:</strong> <code>npm run serve</code> → <code>http://localhost:8080/test-local.html</code>
+            </p>
+            <p><strong>Data Source:</strong> Using mock data from <code>mock-data.json</code> (no CORS issues)</p>
+            <p><strong>Build:</strong> Run <code>npm run build</code> after making changes to source files</p>
+        </div>
+
+        <div class="test-controls">
+            <strong>🔧 Quick Test Controls:</strong><br><br>
+            <button onclick="clearCache()">Clear Cache</button>
+            <button onclick="clearAll()">Clear All & Reload</button>
+            <button onclick="showStorage()">Show Storage Info</button>
+        </div>
+
+        <div class="section">
+            <h2>Live Widget Demo <span class="badge badge-success">ACTIVE</span></h2>
+
+            <!-- Facebook Feed Widget with local mock data -->
+            <div data-securent-fb-widget data-api-url="mock-data.json" data-items-per-page="5"
+                data-fallback-url="https://www.facebook.com/SecureNT"></div>
+        </div>
+
+        <div class="section">
+            <h2>✅ Testing Checklist</h2>
+            <ul>
+                <li><strong>Auto Load:</strong> Widget should load automatically when scrolled into view</li>
+                <li><strong>Posts Display:</strong> Verify 5 posts are shown with proper formatting</li>
+                <li><strong>Line Breaks:</strong> Check messages preserve line breaks (converted to &lt;br&gt;)</li>
+                <li><strong>Timestamps:</strong> Hover over timestamps to see full date/time tooltip</li>
+                <li><strong>External Links:</strong> Links should have external icon and open in new tab</li>
+                <li><strong>Pagination:</strong> Test prev/next buttons (should show "Page X of Y")</li>
+                <li><strong>Refresh Button:</strong> Click refresh - should reset to page 1 and show loading</li>
+                <li><strong>Responsive:</strong> Resize browser window - layout should adapt</li>
+                <li><strong>Accessibility:</strong> Tab through controls - keyboard navigation should work</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Configuration Options</h2>
+
+            <h3>Available Data Attributes:</h3>
+            <pre><code>&lt;div 
+  data-securent-fb-widget
+  data-api-url="mock-data.json"
+  data-items-per-page="5"
+  data-fallback-url="https://www.facebook.com/SecureNT"
+  data-theme="light"
+&gt;&lt;/div&gt;</code></pre>
+
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                <thead>
+                    <tr style="background: #f8f9fa; text-align: left;">
+                        <th style="padding: 0.75rem; border: 1px solid #dee2e6;">Attribute</th>
+                        <th style="padding: 0.75rem; border: 1px solid #dee2e6;">Default</th>
+                        <th style="padding: 0.75rem; border: 1px solid #dee2e6;">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;"><code>data-api-url</code></td>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">SecureNT API</td>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">API endpoint URL</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;"><code>data-items-per-page</code></td>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">5</td>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">Posts per page</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;"><code>data-fallback-url</code></td>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">Facebook page</td>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">Alternative link when API fails</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;"><code>data-theme</code></td>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">light</td>
+                        <td style="padding: 0.75rem; border: 1px solid #dee2e6;">Theme: light or dark</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🔍 Browser Console Commands</h2>
+
+            <h3>Get Widget Instance:</h3>
+            <pre><code>const widget = SecureNTFacebookWidget.getInstance(
+  document.querySelector('[data-securent-fb-widget]')
+);
+console.log(widget);</code></pre>
+
+            <h3>Check Version:</h3>
+            <pre><code>console.log(SecureNTFacebookWidget.version);</code></pre>
+
+            <h3>Clear Storage:</h3>
+            <pre><code>// Clear cache
+localStorage.removeItem('securent-fb-cache');
+localStorage.removeItem('securent-fb-cache-time');
+
+// Reload page
+location.reload();</code></pre>
+
+            <h3>Reinitialize:</h3>
+            <pre><code>SecureNTFacebookWidget.init();</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Production Deployment</h2>
+
+            <h3>For Squiz Matrix via Git FileBridge:</h3>
+            <pre><code>&lt;!-- In page HEAD --&gt;
+&lt;link rel="stylesheet" href="https://your-filebridge-url/dist/securent-fb-widget.css"&gt;
+
+&lt;!-- Inside &lt;section class="facebook-feed"&gt; --&gt;
+&lt;div class="container"&gt;
+  &lt;div data-securent-fb-widget&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Before closing BODY tag --&gt;
+&lt;script src="https://your-filebridge-url/dist/securent-fb-widget.min.js"&gt;&lt;/script&gt;</code></pre>
+
+            <p><span class="badge badge-warning">NOTE</span> Replace <code>mock-data.json</code> with the production API
+                URL in Squiz Matrix.</p>
+        </div>
+    </div>
+
+    <!-- Widget JavaScript -->
+    <script src="dist/securent-fb-widget.js"></script>
+
+    <!-- Test Helper Functions -->
+    <script>
+        function clearCache() {
+            localStorage.removeItem('securent-fb-cache');
+            localStorage.removeItem('securent-fb-cache-time');
+            alert('Cache cleared! The widget will fetch fresh data on next refresh.');
+        }
+
+        function clearAll() {
+            localStorage.removeItem('securent-fb-cache');
+            localStorage.removeItem('securent-fb-cache-time');
+            location.reload();
+        }
+
+        function showStorage() {
+            const cache = localStorage.getItem('securent-fb-cache');
+            const cacheTime = localStorage.getItem('securent-fb-cache-time');
+
+            console.log('=== Storage Info ===');
+            console.log('Cache Time:', cacheTime);
+            console.log('Cache Data:', cache ? JSON.parse(cache) : null);
+
+            alert('Storage info logged to console (F12)');
+        }
+    </script>
+</body>
+
+</html>

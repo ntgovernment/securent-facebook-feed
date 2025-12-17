@@ -1,0 +1,73 @@
+[
+  {
+    "created_time": "2025-12-15T09:01:23+0000",
+    "message": "NT Fire and Rescue Service\nNT FIRE AND RESCUE SERVICE MESSAGE\n\nLOCATION: Warrego Road, Tennant Creek\n\nALERT LEVEL: Advice - Decreasing Threat - There is a reduced level of threat. You can resume normal activities.\n\nFIRE TYPE: Bushfire.\nINFORMATION CURRENT AS AT: 15/12/2025 18:10:00\n\nSTATUS: UNDER CONTROL - The fire is at a stage where fire fighting resources are only required for patrol purposes and major re-ignition is unlikely.\n\nRISKS FACED BY PEOPLE IN THE AREA: Smoke from this fire may affect visibility, Active fire may occur close to the roadside, Firefighting crews may be working close to the roadside.\n\nADVICE TO THE PUBLIC: For the safety of firefighting crews and other vehicles, drivers in the area are urged to slow down, turn on headlights and drive safely for the conditions.",
+    "id": "206409062742375_1270658055095024"
+  },
+  {
+    "created_time": "2025-12-15T08:56:15+0000",
+    "message": "🚧 OIL SPILL - STUART HIGHWAY 🚧\n\nMotorists are urged to be aware of an oil spill on the Stuart Highway, 50km north of Katherine.\n\nThe north bound lane is currently closed. Motorists are urged to follow all traffic control measures in place.\n\nTo stay up to date visit road report.nt gov au.",
+    "id": "206409062742375_1270655655095264"
+  },
+  {
+    "created_time": "2025-12-15T04:04:50+0000",
+    "message": "15/13:33 CST Heatwave Warning (NT)\n  \nFurther details 👇",
+    "attachments": {
+      "data": [
+        {
+          "type": "share",
+          "title": "Warnings and alerts | The Bureau of Meteorology",
+          "unshimmed_url": "https://www.bom.gov.au/weather-and-climate/warnings-and-alerts?stateName=Northern+Territory"
+        }
+      ]
+    },
+    "id": "206409062742375_1270508308443332"
+  },
+  {
+    "created_time": "2025-12-14T05:16:24+0000",
+    "message": "14/14:44 CST Heatwave Warning (NT)\n  \nFurther details 👇",
+    "attachments": {
+      "data": [
+        {
+          "type": "share",
+          "title": "Warnings and alerts | The Bureau of Meteorology",
+          "unshimmed_url": "https://www.bom.gov.au/weather-and-climate/warnings-and-alerts?stateName=Northern+Territory"
+        }
+      ]
+    },
+    "id": "206409062742375_1269793881848108"
+  },
+  {
+    "created_time": "2025-12-13T04:34:57+0000",
+    "message": "13/14:02 CST Heatwave Warning (NT)\n  \nFurther details 👇",
+    "attachments": {
+      "data": [
+        {
+          "type": "share",
+          "title": "Warnings and alerts | The Bureau of Meteorology",
+          "unshimmed_url": "https://www.bom.gov.au/weather-and-climate/warnings-and-alerts?stateName=Northern+Territory"
+        }
+      ]
+    },
+    "id": "206409062742375_1269062291921267"
+  },
+  {
+    "created_time": "2025-12-12T05:16:32+0000",
+    "message": "12/14:45 CST Heatwave Warning (NT)\n  \nFurther details 👇",
+    "attachments": {
+      "data": [
+        {
+          "type": "share",
+          "title": "Warnings and alerts | The Bureau of Meteorology",
+          "unshimmed_url": "https://www.bom.gov.au/weather-and-climate/warnings-and-alerts?stateName=Northern+Territory"
+        }
+      ]
+    },
+    "id": "206409062742375_1268347751992721"
+  },
+  {
+    "created_time": "2025-12-08T06:38:19+0000",
+    "message": "⚠️ SEVERE HEAT HEALTH WARNING ⚠️\n\nHigh temperatures are expected on Tuesday 9 December and Wednesday 10 December 2025, with a Severe Heat Heath Warning in place in the following regions:\n\n📍 Lasseter\n◾ Curtain Springs\n◾ Docker River\n◾ Uluru\n◾ Yulara\n\nSevere heat can be dangerous. While older people, babies, children, people with medical conditions and pregnant and breastfeeding women are most at risk, anyone can be affected, including pets.\n\nResidents and visitors are urged to take action to avoid heat stress and dehydration by:\n\n✅ Staying cool in air-conditioning where possible\n✅ Drinking cold or iced water\n✅ Decreasing physical activity\n✅ Applying SPF 50+ sunscreen",
+    "id": "206409062742375_1265394588954704"
+  }
+]

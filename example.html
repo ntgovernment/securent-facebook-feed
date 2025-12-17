@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureNT Facebook Feed Widget - Example</title>
+
+    <!-- Widget CSS -->
+    <link rel="stylesheet" href="dist/securent-fb-widget.css">
+
+    <!-- Optional: Bootstrap (if you want to match Squiz Matrix styling) -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: #1f1f5f;
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>SecureNT Facebook Feed Widget - Example</h1>
+
+        <div class="section">
+            <h2>Default Configuration</h2>
+            <p>This widget uses all default settings (5 items per page, light theme).</p>
+
+            <!-- Facebook Feed Widget -->
+            <div data-securent-fb-widget></div>
+        </div>
+
+        <div class="section">
+            <h2>Custom Configuration</h2>
+            <p>This widget displays 3 items per page with custom fallback URL.</p>
+
+            <!-- Facebook Feed Widget with custom config -->
+            <div data-securent-fb-widget data-items-per-page="3" data-fallback-url="https://www.facebook.com/SecureNT">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Integration Instructions</h2>
+
+            <h3>For Squiz Matrix:</h3>
+            <p>Add the following code to your page within the <code>&lt;section class="facebook-feed"&gt;</code>
+                section:</p>
+
+            <pre style="background: #f5f5f5; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>&lt;!-- Add to page HEAD or before closing BODY tag --&gt;
+&lt;link rel="stylesheet" href="https://your-filebridge-url/dist/securent-fb-widget.css"&gt;
+
+&lt;!-- Add inside &lt;section class="facebook-feed"&gt; --&gt;
+&lt;div class="container"&gt;
+  &lt;div data-securent-fb-widget&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Add before closing BODY tag --&gt;
+&lt;script src="https://your-filebridge-url/dist/securent-fb-widget.min.js"&gt;&lt;/script&gt;</code></pre>
+
+            <h3>Configuration Options:</h3>
+            <ul>
+                <li><strong>data-api-url</strong> - API endpoint (default: SecureNT API)</li>
+                <li><strong>data-items-per-page</strong> - Number of posts per page (default: 5)</li>
+                <li><strong>data-fallback-url</strong> - Fallback URL (default: https://www.facebook.com/SecureNT)</li>
+                <li><strong>data-theme</strong> - Theme: light or dark (default: light)</li>
+            </ul>
+
+            <h3>Example with all options:</h3>
+            <pre style="background: #f5f5f5; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>&lt;div 
+  data-securent-fb-widget
+  data-items-per-page="10"
+  data-fallback-url="https://www.facebook.com/SecureNT"
+  data-theme="light"
+&gt;&lt;/div&gt;</code></pre>
+        </div>
+    </div>
+
+    <!-- Widget JavaScript -->
+    <script src="dist/securent-fb-widget.js"></script>
+</body>
+
+</html>

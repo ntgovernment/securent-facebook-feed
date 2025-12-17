@@ -1,0 +1,343 @@
+/* SecureNT Facebook Feed Widget Styles */
+
+/* Container */
+.securent-fb-widget {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.securent-fb-widget * {
+  box-sizing: border-box;
+}
+
+/* Cache Notice */
+.securent-fb-cache-notice {
+  background: #fff3cd;
+  border: 1px solid #ffecb5;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #856404;
+}
+
+.securent-fb-icon-warning {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: #ffc107;
+}
+
+/* Header */
+.securent-fb-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.securent-fb-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  color: #1f1f5f;
+  font-weight: 700;
+}
+
+.securent-fb-refresh {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+  color: #1f1f5f;
+  font-weight: 600;
+}
+
+.securent-fb-refresh:hover {
+  background: #f8f9fa;
+  border-color: #1f1f5f;
+}
+
+.securent-fb-icon-refresh {
+  width: 16px;
+  height: 16px;
+}
+
+.securent-fb-refresh:active .securent-fb-icon-refresh {
+  animation: spin 0.6s linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Loading State */
+.securent-fb-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  color: #666;
+}
+
+.securent-fb-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e0e0e0;
+  border-top-color: #1f1f5f;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Feed Container */
+.securent-fb-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Post Card */
+.securent-fb-post {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s;
+}
+
+.securent-fb-post:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Timestamp */
+.securent-fb-timestamp {
+  display: block;
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 0.75rem;
+  cursor: help;
+}
+
+.securent-fb-timestamp:hover {
+  color: #1f1f5f;
+}
+
+/* Message */
+.securent-fb-message {
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Attachments */
+.securent-fb-attachments {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.securent-fb-attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1f1f5f;
+  text-decoration: none;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.securent-fb-attachment:hover {
+  background: #e9ecef;
+  border-color: #1f1f5f;
+  text-decoration: underline;
+}
+
+.securent-fb-icon-external {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Pagination */
+.securent-fb-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.securent-fb-btn-pagination {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+  color: #1f1f5f;
+  font-weight: 600;
+}
+
+.securent-fb-btn-pagination:hover:not(:disabled) {
+  background: #f8f9fa;
+  border-color: #1f1f5f;
+}
+
+.securent-fb-btn-pagination:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.securent-fb-btn-pagination svg {
+  width: 16px;
+  height: 16px;
+}
+
+.securent-fb-page-info {
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Skeleton Loader */
+.securent-fb-skeleton {
+  pointer-events: none;
+}
+
+.securent-fb-skeleton-header {
+  width: 120px;
+  height: 16px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.securent-fb-skeleton-text {
+  height: 16px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+.securent-fb-skeleton-text.short {
+  width: 60%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Error State */
+.securent-fb-error {
+  background: #f8d7da;
+  border: 1px solid #f5c2c7;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  color: #842029;
+}
+
+.securent-fb-error p {
+  margin: 0 0 0.5rem;
+}
+
+.securent-fb-error a {
+  color: #842029;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .securent-fb-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .securent-fb-pagination {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .securent-fb-btn-pagination {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .securent-fb-page-info {
+    order: -1;
+  }
+}
+
+/* Dark Theme (optional) */
+.securent-fb-theme-dark {
+  color: #e0e0e0;
+}
+
+.securent-fb-theme-dark .securent-fb-post {
+  background: #2a2a2a;
+  border-color: #444;
+  color: #e0e0e0;
+}
+
+.securent-fb-theme-dark .securent-fb-message {
+  color: #e0e0e0;
+}
+
+.securent-fb-theme-dark .securent-fb-timestamp {
+  color: #aaa;
+}
+
+.securent-fb-theme-dark .securent-fb-attachment {
+  background: #333;
+  border-color: #444;
+  color: #4a90e2;
+}
