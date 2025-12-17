@@ -389,10 +389,16 @@
       // First escape HTML
       let formatted = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 
-      // Convert URLs to clickable links
+      // Convert URLs with protocols to clickable links
       const urlRegex = /(https?:\/\/[^\s<]+)/g;
       formatted = formatted.replace(urlRegex, url => {
         return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="securent-fb-link">${url}</a>`;
+      });
+
+      // Convert www. URLs without protocol to clickable links
+      const wwwRegex = /(^|[^\/])(www\.[^\s<]+)/g;
+      formatted = formatted.replace(wwwRegex, (match, prefix, url) => {
+        return `${prefix}<a href="https://${url}" target="_blank" rel="noopener noreferrer" class="securent-fb-link">${url}</a>`;
       });
 
       // Convert newlines to <br> tags
