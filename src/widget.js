@@ -29,9 +29,26 @@ export class FacebookFeedWidget {
           .filter((k) => k)
       : null;
 
-    // Parse date filters
-    this.startDate = options.startDate ? new Date(options.startDate) : null;
-    this.endDate = options.endDate ? new Date(options.endDate) : null;
+    // Parse date filters with defaults
+    // Default start date: 1970-01-01
+    // Default end date: tomorrow
+    const defaultStartDate = new Date("1970-01-01");
+    const defaultEndDate = new Date(Date.now() + 86400000); // Tomorrow
+
+    this.startDate = options.startDate
+      ? new Date(options.startDate)
+      : defaultStartDate;
+    this.endDate = options.endDate ? new Date(options.endDate) : defaultEndDate;
+
+    // Validate dates and fallback to defaults if invalid
+    if (isNaN(this.startDate.getTime())) {
+      console.warn("Invalid start date provided, using default (1970-01-01)");
+      this.startDate = defaultStartDate;
+    }
+    if (isNaN(this.endDate.getTime())) {
+      console.warn("Invalid end date provided, using default (tomorrow)");
+      this.endDate = defaultEndDate;
+    }
 
     this.posts = [];
     this.currentPage = 1;
@@ -85,7 +102,7 @@ export class FacebookFeedWidget {
     }
 
     try {
-      const result = await fetchFeed(this.options.apiUrl);
+      const result = await fetchFeed(this.buildApiUrl());
       this.posts = this.filterPosts(result.data);
       this.fromCache = result.fromCache;
       this.cacheTimestamp = result.timestamp;
@@ -128,24 +145,7 @@ export class FacebookFeedWidget {
     if (!posts || posts.length === 0) return [];
 
     return posts.filter((post) => {
-      // Date filtering
-      if (this.startDate || this.endDate) {
-        const postDate = new Date(post.created_time);
-
-        if (this.startDate && postDate < this.startDate) {
-          return false;
-        }
-
-        if (this.endDate) {
-          const endOfDay = new Date(this.endDate);
-          endOfDay.setHours(23, 59, 59, 999);
-          if (postDate > endOfDay) {
-            return false;
-          }
-        }
-      }
-
-      // Keyword filtering
+      // Keyword filtering (date filtering now handled server-side)
       if (this.filterKeywords && this.filterKeywords.length > 0) {
         const message = (post.message || "").toLowerCase();
         const hasKeyword = this.filterKeywords.some((keyword) =>
@@ -159,6 +159,30 @@ export class FacebookFeedWidget {
 
       return true;
     });
+  }
+
+  /**
+   * Format a Date object to YYYY-MM-DD string for API
+   */
+  formatDateForApi(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  /**
+   * Build API URL with required query parameters (since, until, limit)
+   */
+  buildApiUrl() {
+    const baseUrl = this.options.apiUrl;
+    const separator = baseUrl.includes("?") ? "&" : "?";
+
+    const since = encodeURIComponent(this.formatDateForApi(this.startDate));
+    const until = encodeURIComponent(this.formatDateForApi(this.endDate));
+    const limit = 100; // Hardcoded to fetch maximum posts from API
+
+    return `${baseUrl}${separator}since=${since}&until=${until}&limit=${limit}`;
   }
 
   showError() {
