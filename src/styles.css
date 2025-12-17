@@ -373,10 +373,13 @@
   max-height: 225px;
   overflow: hidden;
   position: relative;
+}
+
+.securent-fb-post-compact.securent-fb-post-has-more {
   padding-bottom: 2.5rem;
 }
 
-.securent-fb-post-compact::after {
+.securent-fb-post-compact.securent-fb-post-has-more::after {
   content: "";
   position: absolute;
   bottom: 2.5rem;

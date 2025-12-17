@@ -557,6 +557,7 @@
 
         // Only add "See more" if content is taller than 300px
         if (fullHeight > 300) {
+          card.classList.add("securent-fb-post-has-more");
           const seeMoreLink = document.createElement("a");
           seeMoreLink.href = "#";
           seeMoreLink.className = "securent-fb-see-more";
@@ -567,6 +568,9 @@
             seeMoreLink.textContent = card.classList.contains("securent-fb-post-expanded") ? "See less" : "See more";
           });
           card.appendChild(seeMoreLink);
+        } else {
+          // Remove padding-bottom for short cards
+          card.style.paddingBottom = "0";
         }
       });
     }
