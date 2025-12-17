@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SecureNT Facebook Feed Widget
 
 A non-blocking, privacy-compliant Facebook feed widget for displaying SecureNT posts with lazy loading, pagination, and offline caching.
@@ -204,3 +205,7 @@ MIT License - Copyright (c) 2025 SecureNT
 ## Support
 
 For issues or questions, contact the SecureNT development team.
+=======
+# securent-facebook-feed
+SecureNT Facebook Feed Widget
+>>>>>>> c8416a85d5e5e1e2c68281b45a88ba2cc0a77776
