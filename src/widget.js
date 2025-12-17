@@ -16,7 +16,19 @@ export class FacebookFeedWidget {
       itemsPerPage: parseInt(options.itemsPerPage) || 5,
       fallbackUrl: options.fallbackUrl || "https://www.facebook.com/SecureNT",
       theme: options.theme || "light",
+      title: options.title || "Latest from SecureNT",
+      content: options.content || null,
+      fallbackMessage: options.fallbackMessage || null,
     };
+
+    // Parse filter keywords (semicolon-separated)
+    this.filterKeywords = options.filterKeywords
+      ? options.filterKeywords.split(";").map((k) => k.trim().toLowerCase()).filter((k) => k)
+      : null;
+
+    // Parse date filters
+    this.startDate = options.startDate ? new Date(options.startDate) : null;
+    this.endDate = options.endDate ? new Date(options.endDate) : null;
 
     this.posts = [];
     this.currentPage = 1;
@@ -71,7 +83,7 @@ export class FacebookFeedWidget {
 
     try {
       const result = await fetchFeed(this.options.apiUrl);
-      this.posts = result.data;
+      this.posts = this.filterPosts(result.data);
       this.fromCache = result.fromCache;
       this.cacheTimestamp = result.timestamp;
       this.currentPage = 1;
@@ -109,19 +121,57 @@ export class FacebookFeedWidget {
     }
   }
 
+  filterPosts(posts) {
+    if (!posts || posts.length === 0) return [];
+
+    return posts.filter((post) => {
+      // Date filtering
+      if (this.startDate || this.endDate) {
+        const postDate = new Date(post.created_time);
+
+        if (this.startDate && postDate < this.startDate) {
+          return false;
+        }
+
+        if (this.endDate) {
+          const endOfDay = new Date(this.endDate);
+          endOfDay.setHours(23, 59, 59, 999);
+          if (postDate > endOfDay) {
+            return false;
+          }
+        }
+      }
+
+      // Keyword filtering
+      if (this.filterKeywords && this.filterKeywords.length > 0) {
+        const message = (post.message || "").toLowerCase();
+        const hasKeyword = this.filterKeywords.some((keyword) =>
+          message.includes(keyword)
+        );
+
+        if (!hasKeyword) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }
+
   showError() {
     const cached = getCachedFeed();
 
     if (cached) {
-      this.posts = cached.data;
+      this.posts = this.filterPosts(cached.data);
       this.fromCache = true;
       this.cacheTimestamp = cached.timestamp;
       this.currentPage = 1;
       this.render();
     } else {
+      const fallbackMsg = this.options.fallbackMessage || "Unable to load posts at this time.";
       this.element.innerHTML = `
         <div class="securent-fb-error">
-          <p>Unable to load posts at this time.</p>
+          <p>${this.escapeHtml(fallbackMsg)}</p>
           <p><a href="${this.options.fallbackUrl}" target="_blank" rel="noopener noreferrer">Visit SecureNT on Facebook</a></p>
         </div>
       `;
@@ -161,9 +211,14 @@ export class FacebookFeedWidget {
   }
 
   renderHeader() {
+    const contentHtml = this.options.content 
+      ? `<p class="securent-fb-header-content">${this.escapeHtml(this.options.content)}</p>`
+      : "";
+
     return `
       <div class="securent-fb-header">
-        <h2>Latest from SecureNT</h2>
+        <h2>${this.escapeHtml(this.options.title)}</h2>
+        ${contentHtml}
         <button class="securent-fb-refresh" aria-label="Refresh posts" title="Refresh posts">
           <svg class="securent-fb-icon-refresh" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="23 4 23 10 17 10"></polyline>

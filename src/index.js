@@ -27,6 +27,12 @@ import "./styles.css";
         itemsPerPage: element.getAttribute("data-items-per-page"),
         fallbackUrl: element.getAttribute("data-fallback-url"),
         theme: element.getAttribute("data-theme"),
+        title: element.getAttribute("data-title"),
+        content: element.getAttribute("data-content"),
+        filterKeywords: element.getAttribute("data-filter-keywords"),
+        startDate: element.getAttribute("data-start-date"),
+        endDate: element.getAttribute("data-end-date"),
+        fallbackMessage: element.getAttribute("data-fallback-message"),
       };
 
       // Remove null/undefined values
