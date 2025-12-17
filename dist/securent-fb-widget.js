@@ -569,8 +569,8 @@
           });
           card.appendChild(seeMoreLink);
         } else {
-          // Remove padding-bottom for short cards
-          card.style.paddingBottom = "0";
+          // Remove compact class for short cards to render them as full cards
+          card.classList.remove("securent-fb-post-compact");
         }
       });
     }
