@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Graph API Test</title>
+    <link rel="stylesheet" href="dist/widget.css">
+</head>
+
+<body>
+    <div style="max-width: 800px; margin: 50px auto; padding: 20px;">
+        <h1>Facebook Graph API Integration Test</h1>
+        <p>Testing the new Graph API proxy with mandatory query parameters.</p>
+
+        <!-- Widget with custom date range -->
+        <div data-securent-fb-widget="" data-title="Latest from SecureNT (Graph API)"
+            data-content="<p>View latest updates from SecureNT Facebook via Graph API.</p>"
+            data-api-url="https://securent.nt.gov.au/_design/integration-points/socials/facebook-graph-proxy"
+            data-start-date="2025-11-15" data-end-date="2025-12-10" data-items-per-page="5"
+            class="securent-fb-widget securent-fb-theme-light">
+        </div>
+
+        <!-- Test widget with default dates -->
+        <div style="margin-top: 50px;">
+            <h2>Test Widget (Default Dates)</h2>
+            <div data-securent-fb-widget="" data-title="Latest Posts (Default Date Range)"
+                data-api-url="https://securent.nt.gov.au/_design/integration-points/socials/facebook-graph-proxy"
+                data-items-per-page="3" class="securent-fb-widget securent-fb-theme-light">
+            </div>
+        </div>
+    </div>
+
+    <script src="dist/widget.js"></script>
+
+    <script>
+        // Log the API URL being called for debugging
+        console.log('Widget initialized. Check Network tab for API requests.');
+        console.log('Expected URL pattern: ...facebook-graph-proxy?since=YYYY-MM-DD&until=YYYY-MM-DD&limit=100');
+    </script>
+</body>
+
+</html>

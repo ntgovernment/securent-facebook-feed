@@ -169,6 +169,17 @@
   word-wrap: break-word;
 }
 
+.securent-fb-link {
+  color: #1f1f5f;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.securent-fb-link:hover {
+  color: #14143f;
+  text-decoration: none;
+}
+
 /* Attachments */
 .securent-fb-attachments {
   display: flex;

@@ -201,9 +201,24 @@
       // Parse filter keywords (semicolon-separated)
       this.filterKeywords = options.filterKeywords ? options.filterKeywords.split(";").map(k => k.trim().toLowerCase()).filter(k => k) : null;
 
-      // Parse date filters
-      this.startDate = options.startDate ? new Date(options.startDate) : null;
-      this.endDate = options.endDate ? new Date(options.endDate) : null;
+      // Parse date filters with defaults
+      // Default start date: 1970-01-01
+      // Default end date: tomorrow
+      const defaultStartDate = new Date("1970-01-01");
+      const defaultEndDate = new Date(Date.now() + 86400000); // Tomorrow
+
+      this.startDate = options.startDate ? new Date(options.startDate) : defaultStartDate;
+      this.endDate = options.endDate ? new Date(options.endDate) : defaultEndDate;
+
+      // Validate dates and fallback to defaults if invalid
+      if (isNaN(this.startDate.getTime())) {
+        console.warn("Invalid start date provided, using default (1970-01-01)");
+        this.startDate = defaultStartDate;
+      }
+      if (isNaN(this.endDate.getTime())) {
+        console.warn("Invalid end date provided, using default (tomorrow)");
+        this.endDate = defaultEndDate;
+      }
       this.posts = [];
       this.currentPage = 1;
       this.isLoading = false;
@@ -241,7 +256,7 @@
         this.showSkeletonLoader();
       }
       try {
-        const result = await fetchFeed(this.options.apiUrl);
+        const result = await fetchFeed(this.buildApiUrl());
         this.posts = this.filterPosts(result.data);
         this.fromCache = result.fromCache;
         this.cacheTimestamp = result.timestamp;
@@ -273,22 +288,7 @@
     filterPosts(posts) {
       if (!posts || posts.length === 0) return [];
       return posts.filter(post => {
-        // Date filtering
-        if (this.startDate || this.endDate) {
-          const postDate = new Date(post.created_time);
-          if (this.startDate && postDate < this.startDate) {
-            return false;
-          }
-          if (this.endDate) {
-            const endOfDay = new Date(this.endDate);
-            endOfDay.setHours(23, 59, 59, 999);
-            if (postDate > endOfDay) {
-              return false;
-            }
-          }
-        }
-
-        // Keyword filtering
+        // Keyword filtering (date filtering now handled server-side)
         if (this.filterKeywords && this.filterKeywords.length > 0) {
           const message = (post.message || "").toLowerCase();
           const hasKeyword = this.filterKeywords.some(keyword => message.includes(keyword));
@@ -298,6 +298,29 @@
         }
         return true;
       });
+    }
+
+    /**
+     * Format a Date object to YYYY-MM-DD string for API
+     */
+    formatDateForApi(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    /**
+     * Build API URL with required query parameters (since, until, limit)
+     */
+    buildApiUrl() {
+      const baseUrl = this.options.apiUrl;
+      const separator = baseUrl.includes("?") ? "&" : "?";
+      const since = encodeURIComponent(this.formatDateForApi(this.startDate));
+      const until = encodeURIComponent(this.formatDateForApi(this.endDate));
+      const limit = 100; // Hardcoded to fetch maximum posts from API
+
+      return `${baseUrl}${separator}since=${since}&until=${until}&limit=${limit}`;
     }
     showError() {
       const cached = getCachedFeed();
@@ -386,8 +409,24 @@
     `;
     }
     formatMessage(message) {
-      // Convert newlines to <br> tags and escape HTML
-      return message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;").replace(/\n/g, "<br>");
+      // First escape HTML
+      let formatted = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+
+      // Convert URLs with protocols to clickable links
+      const urlRegex = /(https?:\/\/[^\s<]+)/g;
+      formatted = formatted.replace(urlRegex, url => {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="securent-fb-link">${url}</a>`;
+      });
+
+      // Convert www. URLs without protocol to clickable links
+      const wwwRegex = /(^|[^\/])(www\.[^\s<]+)/g;
+      formatted = formatted.replace(wwwRegex, (match, prefix, url) => {
+        return `${prefix}<a href="https://${url}" target="_blank" rel="noopener noreferrer" class="securent-fb-link">${url}</a>`;
+      });
+
+      // Convert newlines to <br> tags
+      formatted = formatted.replace(/\n/g, "<br>");
+      return formatted;
     }
     renderAttachments(attachments) {
       if (!attachments || attachments.length === 0) return "";
