@@ -373,12 +373,13 @@
   max-height: 225px;
   overflow: hidden;
   position: relative;
+  padding-bottom: 2.5rem;
 }
 
 .securent-fb-post-compact::after {
   content: "";
   position: absolute;
-  bottom: 0;
+  bottom: 2.5rem;
   left: 0;
   right: 0;
   height: 60px;
@@ -393,6 +394,7 @@
 
 .securent-fb-post-compact.securent-fb-post-expanded {
   max-height: none;
+  padding-bottom: 0;
 }
 
 .securent-fb-post-compact.securent-fb-post-expanded::after {
@@ -401,19 +403,26 @@
 
 .securent-fb-see-more {
   display: inline-block;
-  margin-top: 0.5rem;
   color: #1f1f5f;
   font-weight: 600;
   text-decoration: none;
   font-size: 0.9rem;
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 10;
+  background: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .securent-fb-see-more:hover {
   text-decoration: underline;
   color: #0d0d2f;
 }
+
+/* Dark Theme (optional) */
 
 /* Dark Theme (optional) */
 .securent-fb-theme-dark {
