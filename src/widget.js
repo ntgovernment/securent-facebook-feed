@@ -212,7 +212,7 @@ export class FacebookFeedWidget {
 
   renderHeader() {
     const contentHtml = this.options.content 
-      ? `<p class="securent-fb-header-content">${this.escapeHtml(this.options.content)}</p>`
+      ? `<div class="securent-fb-header-content">${this.options.content}</div>`
       : "";
 
     return `
