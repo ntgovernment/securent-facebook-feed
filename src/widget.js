@@ -249,7 +249,7 @@ export class FacebookFeedWidget {
       <div class="securent-fb-header">
         <div class="securent-fb-header-top">
           <h2>${this.escapeHtml(this.options.title)}</h2>
-          <button class="securent-fb-refresh" aria-label="Refresh posts" title="Refresh posts">
+          <button class="securent-fb-refresh btn btn-outline-dark rounded-1 px-3 mb-15" aria-label="Refresh posts" title="Refresh posts">
             <svg class="securent-fb-icon-refresh" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="23 4 23 10 17 10"></polyline>
               <polyline points="1 20 1 14 7 14"></polyline>
@@ -346,28 +346,34 @@ export class FacebookFeedWidget {
     const prevDisabled = this.currentPage === 1;
     const nextDisabled = this.currentPage === totalPages;
 
+    // Generate page number links (show up to 5 pages)
+    let pageLinks = '';
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+    
+    // Adjust startPage if we're near the end
+    if (endPage - startPage < maxVisiblePages - 1) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      const isActive = i === this.currentPage;
+      pageLinks += `<li class="page-item ${isActive ? 'active' : ''}"><a class="page-link" href="javascript:void(0)" data-page="${i}">${i}</a></li>`;
+    }
+
     return `
-      <div class="securent-fb-pagination">
-        <button class="securent-fb-btn-pagination securent-fb-btn-prev" 
-                ${prevDisabled ? "disabled" : ""} 
-                aria-label="Previous page">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-          Previous
-        </button>
-        <span class="securent-fb-page-info" aria-live="polite">
-          Page ${this.currentPage} of ${totalPages}
-        </span>
-        <button class="securent-fb-btn-pagination securent-fb-btn-next" 
-                ${nextDisabled ? "disabled" : ""} 
-                aria-label="Next page">
-          Next
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-      </div>
+      <nav aria-label="navigation" class="pb-5 mb-15">
+        <ul class="pagination justify-content-center">
+          <li class="page-item ${prevDisabled ? 'disabled' : ''}">
+            <a class="page-link securent-fb-btn-prev" href="javascript:void(0)" tabindex="${prevDisabled ? '-1' : ''}" aria-disabled="${prevDisabled}">Previous</a>
+          </li>
+          ${pageLinks}
+          <li class="page-item ${nextDisabled ? 'disabled' : ''}">
+            <a class="page-link securent-fb-btn-next" href="javascript:void(0)" tabindex="${nextDisabled ? '-1' : ''}" aria-disabled="${nextDisabled}">Next</a>
+          </li>
+        </ul>
+      </nav>
     `;
   }
 
@@ -423,6 +429,7 @@ export class FacebookFeedWidget {
     // Pagination buttons
     const prevBtn = this.element.querySelector(".securent-fb-btn-prev");
     const nextBtn = this.element.querySelector(".securent-fb-btn-next");
+    const pageLinks = this.element.querySelectorAll(".page-link[data-page]");
 
     if (prevBtn) {
       prevBtn.addEventListener("click", () =>
@@ -435,6 +442,14 @@ export class FacebookFeedWidget {
         this.goToPage(this.currentPage + 1)
       );
     }
+
+    // Page number links
+    pageLinks.forEach(link => {
+      link.addEventListener("click", (e) => {
+        const page = parseInt(e.target.getAttribute("data-page"));
+        this.goToPage(page);
+      });
+    });
   }
 
   goToPage(page) {
