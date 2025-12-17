@@ -386,8 +386,18 @@
     `;
     }
     formatMessage(message) {
-      // Convert newlines to <br> tags and escape HTML
-      return message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;").replace(/\n/g, "<br>");
+      // First escape HTML
+      let formatted = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+
+      // Convert URLs to clickable links
+      const urlRegex = /(https?:\/\/[^\s<]+)/g;
+      formatted = formatted.replace(urlRegex, url => {
+        return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="securent-fb-link">${url}</a>`;
+      });
+
+      // Convert newlines to <br> tags
+      formatted = formatted.replace(/\n/g, "<br>");
+      return formatted;
     }
     renderAttachments(attachments) {
       if (!attachments || attachments.length === 0) return "";
