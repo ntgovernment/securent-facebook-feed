@@ -347,19 +347,21 @@
       this.attachEventListeners();
     }
     renderHeader() {
-      const contentHtml = this.options.content ? `<p class="securent-fb-header-content">${this.escapeHtml(this.options.content)}</p>` : "";
+      const contentHtml = this.options.content ? `<div class="securent-fb-header-content">${this.options.content}</div>` : "";
       return `
       <div class="securent-fb-header">
-        <h2>${this.escapeHtml(this.options.title)}</h2>
+        <div class="securent-fb-header-top">
+          <h2>${this.escapeHtml(this.options.title)}</h2>
+          <button class="securent-fb-refresh" aria-label="Refresh posts" title="Refresh posts">
+            <svg class="securent-fb-icon-refresh" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            Refresh
+          </button>
+        </div>
         ${contentHtml}
-        <button class="securent-fb-refresh" aria-label="Refresh posts" title="Refresh posts">
-          <svg class="securent-fb-icon-refresh" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="23 4 23 10 17 10"></polyline>
-            <polyline points="1 20 1 14 7 14"></polyline>
-            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-          </svg>
-          Refresh
-        </button>
       </div>
       <div class="securent-fb-loading" style="display: none;">
         <div class="securent-fb-spinner"></div>
