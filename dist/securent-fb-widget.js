@@ -369,6 +369,7 @@
       }
       this.element.innerHTML = html;
       this.attachEventListeners();
+      this.applyCompactCardLogic();
     }
     renderHeader() {
       const contentHtml = this.options.content ? `<div class="securent-fb-header-content">${this.options.content}</div>` : "";
@@ -401,7 +402,6 @@
       const attachments = post.attachments ? this.renderAttachments(post.attachments.data) : "";
       const isCompact = this.options.cardSize === "compact";
       const compactClass = isCompact ? " securent-fb-post-compact" : "";
-      const seeMoreLink = isCompact ? `<a href="#" class="securent-fb-see-more">See more</a>` : "";
       return `
       <article class="securent-fb-post${compactClass}">
         <time class="securent-fb-timestamp" datetime="${post.created_time}" title="${formattedTime}">
@@ -409,7 +409,6 @@
         </time>
         <div class="securent-fb-message">${message}</div>
         ${attachments}
-        ${seeMoreLink}
       </article>
     `;
     }
@@ -545,18 +544,30 @@
           this.goToPage(page);
         });
       });
+    }
+    applyCompactCardLogic() {
+      if (this.options.cardSize !== "compact") return;
+      const compactCards = this.element.querySelectorAll(".securent-fb-post-compact");
+      compactCards.forEach(card => {
+        // Temporarily remove height restriction to measure full content height
+        const originalMaxHeight = card.style.maxHeight;
+        card.style.maxHeight = "none";
+        const fullHeight = card.scrollHeight;
+        card.style.maxHeight = originalMaxHeight;
 
-      // See more links for compact cards
-      const seeMoreLinks = this.element.querySelectorAll(".securent-fb-see-more");
-      seeMoreLinks.forEach(link => {
-        link.addEventListener("click", e => {
-          e.preventDefault();
-          const post = link.closest(".securent-fb-post");
-          if (post) {
-            post.classList.toggle("securent-fb-post-expanded");
-            link.textContent = post.classList.contains("securent-fb-post-expanded") ? "See less" : "See more";
-          }
-        });
+        // Only add "See more" if content is taller than 300px
+        if (fullHeight > 300) {
+          const seeMoreLink = document.createElement("a");
+          seeMoreLink.href = "#";
+          seeMoreLink.className = "securent-fb-see-more";
+          seeMoreLink.textContent = "See more";
+          seeMoreLink.addEventListener("click", e => {
+            e.preventDefault();
+            card.classList.toggle("securent-fb-post-expanded");
+            seeMoreLink.textContent = card.classList.contains("securent-fb-post-expanded") ? "See less" : "See more";
+          });
+          card.appendChild(seeMoreLink);
+        }
       });
     }
     goToPage(page) {
