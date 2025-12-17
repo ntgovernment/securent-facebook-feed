@@ -33,6 +33,7 @@ import "./styles.css";
         startDate: element.getAttribute("data-start-date"),
         endDate: element.getAttribute("data-end-date"),
         fallbackMessage: element.getAttribute("data-fallback-message"),
+        cardSize: element.getAttribute("data-card-size"),
       };
 
       // Remove null/undefined values

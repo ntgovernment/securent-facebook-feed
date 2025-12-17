@@ -368,6 +368,53 @@
   color: #fff; /* var(--bs-white) */
 }
 
+/* Compact Card Styles */
+.securent-fb-post-compact {
+  max-height: 225px;
+  overflow: hidden;
+  position: relative;
+}
+
+.securent-fb-post-compact::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1)
+  );
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.securent-fb-post-compact.securent-fb-post-expanded {
+  max-height: none;
+}
+
+.securent-fb-post-compact.securent-fb-post-expanded::after {
+  opacity: 0;
+}
+
+.securent-fb-see-more {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: #1f1f5f;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 1;
+}
+
+.securent-fb-see-more:hover {
+  text-decoration: underline;
+  color: #0d0d2f;
+}
+
 /* Dark Theme (optional) */
 .securent-fb-theme-dark {
   color: #e0e0e0;

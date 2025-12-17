@@ -19,6 +19,7 @@ export class FacebookFeedWidget {
       title: options.title || "Latest from SecureNT",
       content: options.content || null,
       fallbackMessage: options.fallbackMessage || null,
+      cardSize: options.cardSize || "full",
     };
 
     // Parse filter keywords (semicolon-separated)
@@ -276,13 +277,20 @@ export class FacebookFeedWidget {
       ? this.renderAttachments(post.attachments.data)
       : "";
 
+    const isCompact = this.options.cardSize === "compact";
+    const compactClass = isCompact ? " securent-fb-post-compact" : "";
+    const seeMoreLink = isCompact
+      ? `<a href="#" class="securent-fb-see-more">See more</a>`
+      : "";
+
     return `
-      <article class="securent-fb-post">
+      <article class="securent-fb-post${compactClass}">
         <time class="securent-fb-timestamp" datetime="${post.created_time}" title="${formattedTime}">
           ${relativeTime}
         </time>
         <div class="securent-fb-message">${message}</div>
         ${attachments}
+        ${seeMoreLink}
       </article>
     `;
   }
@@ -457,6 +465,23 @@ export class FacebookFeedWidget {
       link.addEventListener("click", (e) => {
         const page = parseInt(e.target.getAttribute("data-page"));
         this.goToPage(page);
+      });
+    });
+
+    // See more links for compact cards
+    const seeMoreLinks = this.element.querySelectorAll(".securent-fb-see-more");
+    seeMoreLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const post = link.closest(".securent-fb-post");
+        if (post) {
+          post.classList.toggle("securent-fb-post-expanded");
+          link.textContent = post.classList.contains(
+            "securent-fb-post-expanded"
+          )
+            ? "See less"
+            : "See more";
+        }
       });
     });
   }
