@@ -375,7 +375,7 @@
       <div class="securent-fb-header">
         <div class="securent-fb-header-top">
           <h2>${this.escapeHtml(this.options.title)}</h2>
-          <button class="securent-fb-refresh btn btn-outline-dark rounded-1 px-3 mb-15" aria-label="Refresh posts" title="Refresh posts">
+          <button class="securent-fb-refresh" aria-label="Refresh posts" title="Refresh posts">
             <svg class="securent-fb-icon-refresh" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="23 4 23 10 17 10"></polyline>
               <polyline points="1 20 1 14 7 14"></polyline>
