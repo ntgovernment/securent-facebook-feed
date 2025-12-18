@@ -195,7 +195,8 @@
         theme: options.theme || "light",
         title: options.title || "Latest from SecureNT",
         content: options.content || null,
-        fallbackMessage: options.fallbackMessage || null
+        fallbackMessage: options.fallbackMessage || null,
+        cardSize: options.cardSize || "full"
       };
 
       // Parse filter keywords (semicolon-separated)
@@ -225,6 +226,7 @@
       this.observer = null;
       this.fromCache = false;
       this.cacheTimestamp = null;
+      this.lastUpdated = null;
       this.init();
     }
     init() {
@@ -260,6 +262,7 @@
         this.posts = this.filterPosts(result.data);
         this.fromCache = result.fromCache;
         this.cacheTimestamp = result.timestamp;
+        this.lastUpdated = new Date();
         this.currentPage = 1;
         this.render();
       } catch (error) {
@@ -368,9 +371,11 @@
       }
       this.element.innerHTML = html;
       this.attachEventListeners();
+      this.applyCompactCardLogic();
     }
     renderHeader() {
       const contentHtml = this.options.content ? `<div class="securent-fb-header-content">${this.options.content}</div>` : "";
+      const lastUpdatedHtml = this.lastUpdated ? `<div class="securent-fb-last-updated">Last updated: ${this.formatAbsoluteTime(this.lastUpdated)}</div>` : "";
       return `
       <div class="securent-fb-header">
         <div class="securent-fb-header-top">
@@ -384,6 +389,7 @@
             Refresh
           </button>
         </div>
+        ${lastUpdatedHtml}
         ${contentHtml}
       </div>
       <div class="securent-fb-loading" style="display: none;">
@@ -398,8 +404,10 @@
       const formattedTime = this.formatAbsoluteTime(timestamp);
       const message = this.formatMessage(post.message || "");
       const attachments = post.attachments ? this.renderAttachments(post.attachments.data) : "";
+      const isCompact = this.options.cardSize === "compact";
+      const compactClass = isCompact ? " securent-fb-post-compact" : "";
       return `
-      <article class="securent-fb-post">
+      <article class="securent-fb-post${compactClass}">
         <time class="securent-fb-timestamp" datetime="${post.created_time}" title="${formattedTime}">
           ${relativeTime}
         </time>
@@ -453,28 +461,33 @@
     renderPagination(totalPages) {
       const prevDisabled = this.currentPage === 1;
       const nextDisabled = this.currentPage === totalPages;
+
+      // Generate page number links (show up to 5 pages)
+      let pageLinks = "";
+      const maxVisiblePages = 5;
+      let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+      let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+      // Adjust startPage if we're near the end
+      if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+      for (let i = startPage; i <= endPage; i++) {
+        const isActive = i === this.currentPage;
+        pageLinks += `<li class="page-item ${isActive ? "active" : ""}"><a class="page-link" href="javascript:void(0)" data-page="${i}">${i}</a></li>`;
+      }
       return `
-      <div class="securent-fb-pagination">
-        <button class="securent-fb-btn-pagination securent-fb-btn-prev" 
-                ${prevDisabled ? "disabled" : ""} 
-                aria-label="Previous page">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-          Previous
-        </button>
-        <span class="securent-fb-page-info" aria-live="polite">
-          Page ${this.currentPage} of ${totalPages}
-        </span>
-        <button class="securent-fb-btn-pagination securent-fb-btn-next" 
-                ${nextDisabled ? "disabled" : ""} 
-                aria-label="Next page">
-          Next
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
-      </div>
+      <nav aria-label="navigation" class="pb-5 mb-15">
+        <ul class="pagination justify-content-center">
+          <li class="page-item ${prevDisabled ? "disabled" : ""}">
+            <a class="page-link securent-fb-btn-prev" href="javascript:void(0)" tabindex="${prevDisabled ? "-1" : ""}" aria-disabled="${prevDisabled}">Previous</a>
+          </li>
+          ${pageLinks}
+          <li class="page-item ${nextDisabled ? "disabled" : ""}">
+            <a class="page-link securent-fb-btn-next" href="javascript:void(0)" tabindex="${nextDisabled ? "-1" : ""}" aria-disabled="${nextDisabled}">Next</a>
+          </li>
+        </ul>
+      </nav>
     `;
     }
     getRelativeTime(date) {
@@ -520,12 +533,50 @@
       // Pagination buttons
       const prevBtn = this.element.querySelector(".securent-fb-btn-prev");
       const nextBtn = this.element.querySelector(".securent-fb-btn-next");
+      const pageLinks = this.element.querySelectorAll(".page-link[data-page]");
       if (prevBtn) {
         prevBtn.addEventListener("click", () => this.goToPage(this.currentPage - 1));
       }
       if (nextBtn) {
         nextBtn.addEventListener("click", () => this.goToPage(this.currentPage + 1));
       }
+
+      // Page number links
+      pageLinks.forEach(link => {
+        link.addEventListener("click", e => {
+          const page = parseInt(e.target.getAttribute("data-page"));
+          this.goToPage(page);
+        });
+      });
+    }
+    applyCompactCardLogic() {
+      if (this.options.cardSize !== "compact") return;
+      const compactCards = this.element.querySelectorAll(".securent-fb-post-compact");
+      compactCards.forEach(card => {
+        // Temporarily remove height restriction to measure full content height
+        const originalMaxHeight = card.style.maxHeight;
+        card.style.maxHeight = "none";
+        const fullHeight = card.scrollHeight;
+        card.style.maxHeight = originalMaxHeight;
+
+        // Only add "See more" if content is taller than 300px
+        if (fullHeight > 300) {
+          card.classList.add("securent-fb-post-has-more");
+          const seeMoreLink = document.createElement("a");
+          seeMoreLink.href = "#";
+          seeMoreLink.className = "securent-fb-see-more";
+          seeMoreLink.textContent = "See more";
+          seeMoreLink.addEventListener("click", e => {
+            e.preventDefault();
+            card.classList.toggle("securent-fb-post-expanded");
+            seeMoreLink.textContent = card.classList.contains("securent-fb-post-expanded") ? "See less" : "See more";
+          });
+          card.appendChild(seeMoreLink);
+        } else {
+          // Remove compact class for short cards to render them as full cards
+          card.classList.remove("securent-fb-post-compact");
+        }
+      });
     }
     goToPage(page) {
       const totalPages = Math.ceil(this.posts.length / this.options.itemsPerPage);
@@ -576,12 +627,13 @@
           filterKeywords: element.getAttribute("data-filter-keywords"),
           startDate: element.getAttribute("data-start-date"),
           endDate: element.getAttribute("data-end-date"),
-          fallbackMessage: element.getAttribute("data-fallback-message")
+          fallbackMessage: element.getAttribute("data-fallback-message"),
+          cardSize: element.getAttribute("data-card-size")
         };
 
-        // Remove null/undefined values
+        // Remove null/undefined/empty values
         Object.keys(config).forEach(key => {
-          if (config[key] === null || config[key] === undefined) {
+          if (config[key] === null || config[key] === undefined || config[key] === "") {
             delete config[key];
           }
         });

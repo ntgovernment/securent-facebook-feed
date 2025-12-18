@@ -33,11 +33,16 @@ import "./styles.css";
         startDate: element.getAttribute("data-start-date"),
         endDate: element.getAttribute("data-end-date"),
         fallbackMessage: element.getAttribute("data-fallback-message"),
+        cardSize: element.getAttribute("data-card-size"),
       };
 
-      // Remove null/undefined values
+      // Remove null/undefined/empty values
       Object.keys(config).forEach((key) => {
-        if (config[key] === null || config[key] === undefined) {
+        if (
+          config[key] === null ||
+          config[key] === undefined ||
+          config[key] === ""
+        ) {
           delete config[key];
         }
       });
