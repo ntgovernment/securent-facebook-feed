@@ -355,7 +355,7 @@ export class FacebookFeedWidget {
           </a>
         `;
         }
-        
+
         // Handle link attachments
         if (att.unshimmed_url && att.title) {
           return `
@@ -377,7 +377,9 @@ export class FacebookFeedWidget {
       .filter((el) => el)
       .join("");
 
-    return elements ? `<div class="securent-fb-attachments">${elements}</div>` : "";
+    return elements
+      ? `<div class="securent-fb-attachments">${elements}</div>`
+      : "";
   }
 
   renderPagination(totalPages) {

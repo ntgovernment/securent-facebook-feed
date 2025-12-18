@@ -75,18 +75,18 @@ Configure the widget using data attributes:
 
 ### Configuration Options
 
-| Attribute                | Default                                                                                    | Description                                         |
-| ------------------------ | ------------------------------------------------------------------------------------------ | --------------------------------------------------- |
-| `data-api-url`           | `https://securent.nt.gov.au/_design/integration-points/socials/facebook-securent/_nocache` | API endpoint URL (server-side proxy, no tokens)     |
-| `data-title`             | `"Latest from SecureNT"`                                                                   | Widget header title                                 |
-| `data-content`           | `null`                                                                                     | HTML content below title (from WYSIWYG editor)      |
-| `data-filter-keywords`   | `null`                                                                                     | Semicolon-separated keywords (case-insensitive)     |
-| `data-start-date`        | `null`                                                                                     | Filter posts from this date (YYYY-MM-DD)            |
-| `data-end-date`          | `null`                                                                                     | Filter posts until this date (YYYY-MM-DD)           |
-| `data-items-per-page`    | `5`                                                                                        | Number of posts per page                            |
-| `data-fallback-url`      | `https://www.facebook.com/SecureNT`                                                        | URL to show when API fails                          |
-| `data-fallback-message`  | `"Unable to load posts at this time."`                                                     | Custom error message                                |
-| `data-theme`             | `light`                                                                                    | Theme: `light` or `dark`                            |
+| Attribute               | Default                                                                                    | Description                                     |
+| ----------------------- | ------------------------------------------------------------------------------------------ | ----------------------------------------------- |
+| `data-api-url`          | `https://securent.nt.gov.au/_design/integration-points/socials/facebook-securent/_nocache` | API endpoint URL (server-side proxy, no tokens) |
+| `data-title`            | `"Latest from SecureNT"`                                                                   | Widget header title                             |
+| `data-content`          | `null`                                                                                     | HTML content below title (from WYSIWYG editor)  |
+| `data-filter-keywords`  | `null`                                                                                     | Semicolon-separated keywords (case-insensitive) |
+| `data-start-date`       | `null`                                                                                     | Filter posts from this date (YYYY-MM-DD)        |
+| `data-end-date`         | `null`                                                                                     | Filter posts until this date (YYYY-MM-DD)       |
+| `data-items-per-page`   | `5`                                                                                        | Number of posts per page                        |
+| `data-fallback-url`     | `https://www.facebook.com/SecureNT`                                                        | URL to show when API fails                      |
+| `data-fallback-message` | `"Unable to load posts at this time."`                                                     | Custom error message                            |
+| `data-theme`            | `light`                                                                                    | Theme: `light` or `dark`                        |
 
 ## Usage Examples
 
@@ -203,6 +203,7 @@ Use both date and keyword filters together:
 ```
 
 Posts must match BOTH conditions:
+
 1. Created between the date range AND
 2. Contains at least one keyword
 
@@ -213,6 +214,7 @@ The widget automatically converts URLs in post messages to clickable links:
 ### Supported URL Formats
 
 1. **Full URLs with protocol**
+
    - `https://securent.nt.gov.au` → clickable link
    - `http://example.com` → clickable link
 
@@ -393,25 +395,30 @@ securent-facebook-feed/
 ### Local Development
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/ntgovernment/securent-facebook-feed.git
    cd securent-facebook-feed
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start development server**
+
    ```bash
    npm run serve
    ```
+
    Opens http://127.0.0.1:8080 with test page
 
 4. **Make changes to src/ files**
 
 5. **Build for production**
+
    ```bash
    npm run build
    ```
@@ -429,18 +436,21 @@ Test with different configurations:
 
 ```html
 <!-- Test date filtering -->
-<div data-securent-fb-widget 
-     data-start-date="2025-11-15" 
-     data-end-date="2025-12-10"></div>
+<div
+  data-securent-fb-widget
+  data-start-date="2025-11-15"
+  data-end-date="2025-12-10"
+></div>
 
 <!-- Test keyword filtering -->
-<div data-securent-fb-widget 
-     data-filter-keywords="emergency; alert"></div>
+<div data-securent-fb-widget data-filter-keywords="emergency; alert"></div>
 
 <!-- Test custom content -->
-<div data-securent-fb-widget 
-     data-title="Test Widget"
-     data-content="<p>Test HTML content</p>"></div>
+<div
+  data-securent-fb-widget
+  data-title="Test Widget"
+  data-content="<p>Test HTML content</p>"
+></div>
 ```
 
 ## License
@@ -454,17 +464,20 @@ For issues or questions, contact the **Web Design and Support - Frontend Design 
 ## Changelog
 
 ### v1.3.0 (2025-12-18)
+
 - Added photo attachment support with clickable "View Photo" links
 - Added localhost detection for automatic mock data usage during development
 - Enhanced attachment rendering to handle both photos and link shares
 - Added visual distinction for photo attachments (blue styling)
 
 ### v1.2.0 (2025-12-18)
+
 - Added automatic URL detection and linking (http/https/www.)
 - Added support for www. URLs without protocol
 - Enhanced link styling with hover effects
 
 ### v1.1.0 (2025-12-17)
+
 - Added date range filtering (start-date, end-date)
 - Added keyword filtering (semicolon-separated)
 - Added customizable header title and HTML content
@@ -473,6 +486,7 @@ For issues or questions, contact the **Web Design and Support - Frontend Design 
 - Improved WYSIWYG editor integration
 
 ### v1.0.0 (2025-12-15)
+
 - Initial release
 - Lazy loading with Intersection Observer
 - Pagination support
