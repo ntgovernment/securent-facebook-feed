@@ -36,9 +36,13 @@ import "./styles.css";
         cardSize: element.getAttribute("data-card-size"),
       };
 
-      // Remove null/undefined values
+      // Remove null/undefined/empty values
       Object.keys(config).forEach((key) => {
-        if (config[key] === null || config[key] === undefined) {
+        if (
+          config[key] === null ||
+          config[key] === undefined ||
+          config[key] === ""
+        ) {
           delete config[key];
         }
       });
