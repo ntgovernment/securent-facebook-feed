@@ -226,6 +226,7 @@
       this.observer = null;
       this.fromCache = false;
       this.cacheTimestamp = null;
+      this.lastUpdated = null;
       this.init();
     }
     init() {
@@ -261,6 +262,7 @@
         this.posts = this.filterPosts(result.data);
         this.fromCache = result.fromCache;
         this.cacheTimestamp = result.timestamp;
+        this.lastUpdated = new Date();
         this.currentPage = 1;
         this.render();
       } catch (error) {
@@ -373,6 +375,7 @@
     }
     renderHeader() {
       const contentHtml = this.options.content ? `<div class="securent-fb-header-content">${this.options.content}</div>` : "";
+      const lastUpdatedHtml = this.lastUpdated ? `<div class="securent-fb-last-updated">Last updated: ${this.formatAbsoluteTime(this.lastUpdated)}</div>` : "";
       return `
       <div class="securent-fb-header">
         <div class="securent-fb-header-top">
@@ -386,6 +389,7 @@
             Refresh
           </button>
         </div>
+        ${lastUpdatedHtml}
         ${contentHtml}
       </div>
       <div class="securent-fb-loading" style="display: none;">

@@ -57,6 +57,7 @@ export class FacebookFeedWidget {
     this.observer = null;
     this.fromCache = false;
     this.cacheTimestamp = null;
+    this.lastUpdated = null;
 
     this.init();
   }
@@ -107,6 +108,7 @@ export class FacebookFeedWidget {
       this.posts = this.filterPosts(result.data);
       this.fromCache = result.fromCache;
       this.cacheTimestamp = result.timestamp;
+      this.lastUpdated = new Date();
       this.currentPage = 1;
 
       this.render();
@@ -247,6 +249,12 @@ export class FacebookFeedWidget {
       ? `<div class="securent-fb-header-content">${this.options.content}</div>`
       : "";
 
+    const lastUpdatedHtml = this.lastUpdated
+      ? `<div class="securent-fb-last-updated">Last updated: ${this.formatAbsoluteTime(
+          this.lastUpdated
+        )}</div>`
+      : "";
+
     return `
       <div class="securent-fb-header">
         <div class="securent-fb-header-top">
@@ -260,6 +268,7 @@ export class FacebookFeedWidget {
             Refresh
           </button>
         </div>
+        ${lastUpdatedHtml}
         ${contentHtml}
       </div>
       <div class="securent-fb-loading" style="display: none;">

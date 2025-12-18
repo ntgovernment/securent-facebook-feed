@@ -68,6 +68,13 @@
   margin: 0 0 0.5rem;
 }
 
+.securent-fb-last-updated {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+}
+
 .securent-fb-refresh {
   background: transparent;
   border: 1px solid #212529; /* var(--bs-gray-900) */
