@@ -8,6 +8,23 @@ const CACHE_TIME_KEY = "securent-fb-cache-time";
 const API_TIMEOUT = 5000; // 5 seconds
 
 /**
+ * Determine the appropriate API URL based on environment
+ * @param {string} apiUrl - Configured API endpoint URL
+ * @returns {string} - API URL or mock data path for localhost
+ */
+function getApiUrl(apiUrl) {
+  const hostname = window.location.hostname;
+
+  // Check if running on localhost
+  if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "") {
+    console.log("[SecureNT Widget] Running on localhost - using mock data");
+    return "mock-data.json";
+  }
+
+  return apiUrl;
+}
+
+/**
  * Fetch data from API with timeout and retry logic
  * @param {string} url - API endpoint URL
  * @param {number} retries - Number of retries remaining
@@ -102,7 +119,8 @@ function getFromCache() {
  */
 export async function fetchFeed(apiUrl) {
   try {
-    const data = await fetchWithRetry(apiUrl);
+    const url = getApiUrl(apiUrl);
+    const data = await fetchWithRetry(url);
     return {
       data,
       fromCache: false,

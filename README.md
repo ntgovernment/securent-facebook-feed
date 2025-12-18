@@ -8,6 +8,7 @@ A highly configurable, privacy-compliant Facebook feed widget for the NT Governm
 - ✅ **Date range filtering** - Filter posts by start and end date
 - ✅ **Keyword filtering** - Filter posts by keywords (case-insensitive)
 - ✅ **Automatic URL linking** - Converts URLs and www. links to clickable links
+- ✅ **Photo attachments** - Displays clickable photo links from Facebook posts
 - ✅ **Offline fallback** - Displays cached data when API is unavailable
 - ✅ **Pagination** - Navigate through posts with configurable items per page
 - ✅ **Manual refresh** - Update feed without page reload
@@ -221,6 +222,17 @@ The widget automatically converts URLs in post messages to clickable links:
 
 All links open in a new tab with security attributes (`rel="noopener noreferrer"`).
 
+## Photo Attachments
+
+The widget displays photo attachments from Facebook posts:
+
+- Posts with photos show a "View Photo" button with a photo icon
+- Clicking the button opens the photo on Facebook in a new tab
+- Photo links are visually distinct with a blue background
+- Supports ARIA labels for screen readers
+
+**Note**: The widget displays links to Facebook photos, not embedded images. To display actual photos inline, your server-side API would need to return direct image URLs from Facebook Graph API's `attachments{media}` field.
+
 ## Customizing Header Content
 
 The widget supports custom HTML content below the title, perfect for WYSIWYG editor integration:
@@ -301,9 +313,9 @@ The widget expects JSON data in this format:
 ### Optional Fields
 
 - `attachments.data[]` (array of attachments)
-  - `type` (attachment type)
-  - `title` (link title)
-  - `unshimmed_url` (actual URL)
+  - `type` (attachment type: `"share"`, `"photo"`, etc.)
+  - `title` (link title for share attachments)
+  - `unshimmed_url` (URL for attachment - photo page or shared link)
 
 ## Browser Compatibility
 
@@ -440,6 +452,12 @@ MIT License - Copyright (c) 2025 Northern Territory Government
 For issues or questions, contact the **Web Design and Support - Frontend Design team**.
 
 ## Changelog
+
+### v1.3.0 (2025-12-18)
+- Added photo attachment support with clickable "View Photo" links
+- Added localhost detection for automatic mock data usage during development
+- Enhanced attachment rendering to handle both photos and link shares
+- Added visual distinction for photo attachments (blue styling)
 
 ### v1.2.0 (2025-12-18)
 - Added automatic URL detection and linking (http/https/www.)

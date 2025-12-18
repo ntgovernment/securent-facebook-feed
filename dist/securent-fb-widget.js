@@ -11,6 +11,22 @@
   const API_TIMEOUT = 5000; // 5 seconds
 
   /**
+   * Determine the appropriate API URL based on environment
+   * @param {string} apiUrl - Configured API endpoint URL
+   * @returns {string} - API URL or mock data path for localhost
+   */
+  function getApiUrl(apiUrl) {
+    const hostname = window.location.hostname;
+
+    // Check if running on localhost
+    if (hostname === "localhost" || hostname === "127.0.0.1" || hostname === "") {
+      console.log("[SecureNT Widget] Running on localhost - using mock data");
+      return "mock-data.json";
+    }
+    return apiUrl;
+  }
+
+  /**
    * Fetch data from API with timeout and retry logic
    * @param {string} url - API endpoint URL
    * @param {number} retries - Number of retries remaining
@@ -99,7 +115,8 @@
    */
   async function fetchFeed(apiUrl) {
     try {
-      const data = await fetchWithRetry(apiUrl);
+      const url = getApiUrl(apiUrl);
+      const data = await fetchWithRetry(url);
       return {
         data,
         fromCache: false,
@@ -438,7 +455,31 @@
     }
     renderAttachments(attachments) {
       if (!attachments || attachments.length === 0) return "";
-      const links = attachments.map(att => {
+      const elements = attachments.map(att => {
+        // Handle photo attachments
+        if (att.type === "photo" && att.unshimmed_url) {
+          return `
+          <a href="${this.escapeHtml(att.unshimmed_url)}" 
+             class="securent-fb-attachment securent-fb-photo-attachment" 
+             target="_blank" 
+             rel="noopener noreferrer"
+             aria-label="View photo on Facebook">
+            <svg class="securent-fb-icon-photo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            View Photo
+            <svg class="securent-fb-icon-external" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </a>
+        `;
+        }
+
+        // Handle link attachments
         if (att.unshimmed_url && att.title) {
           return `
           <a href="${this.escapeHtml(att.unshimmed_url)}" 
@@ -455,8 +496,8 @@
         `;
         }
         return "";
-      }).filter(link => link).join("");
-      return links ? `<div class="securent-fb-attachments">${links}</div>` : "";
+      }).filter(el => el).join("");
+      return elements ? `<div class="securent-fb-attachments">${elements}</div>` : "";
     }
     renderPagination(totalPages) {
       const prevDisabled = this.currentPage === 1;
